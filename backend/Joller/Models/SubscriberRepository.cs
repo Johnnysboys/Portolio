@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using MongoDB.Bson;
 using Microsoft.Extensions.Options;
 
 namespace Joller.Models
@@ -18,6 +19,21 @@ namespace Joller.Models
         {
             this._context = new SubscriberContext(ConnectionUrl);
         }
+
+        // public async Task<List<String>> FindAll()
+        // {
+        //     var subs = await this._context.Subscribers.FindAsync<Subscriber>(new BsonDocument());
+        //     var Cat = new List<String>();
+
+
+
+        //     while(await subs.MoveNextAsync()) {
+        //         Cat.Add(subs.Current);
+        //     }
+
+        //     System.Console.Write(subs.ToString());
+
+        // }
         public async Task AddSubscriber(Subscriber item)
         {
             try
@@ -35,8 +51,8 @@ namespace Joller.Models
         {
             try
             {
-                return await (await _context.Subscribers
-                        .FindAsync(_ => true)).ToListAsync();
+                var subs = await this._context.Subscribers.FindAsync<Subscriber>(new BsonDocument());
+                return subs.Current;
             }
             catch (Exception ex)
             {

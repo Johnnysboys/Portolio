@@ -18,13 +18,13 @@ namespace Joller.Models
         {
             var client = new MongoClient(ConnectionUrl);
             if (client != null)
-                _database = client.GetDatabase("Subscribers");
+                _database = client.GetDatabase("Joller");
         }
         public IMongoCollection<Subscriber> Subscribers
         {
             get
             {
-                return _database.GetCollection<Subscriber>("Subscriber");
+                return _database.GetCollection<Subscriber>("Subscribers");
             }
         }
     }

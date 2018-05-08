@@ -13,8 +13,8 @@ namespace Joller
             Console.WriteLine(_subscriberRepository);
             Get("/", async args =>
             {
-                var all = await this._subscriberRepository.GetAllSubscribers();
-                return Response.AsJson(all);
+                await this._subscriberRepository.GetAllSubscribers();
+                return Response.AsJson("k");
             });
             Post("/", args =>
             {
