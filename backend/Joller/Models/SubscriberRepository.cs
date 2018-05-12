@@ -49,21 +49,30 @@ namespace Joller.Models
 
         public async Task<IEnumerable<Subscriber>> GetAllSubscribers()
         {
-            try
+            var Collection = await this._context.Subscribers.FindAsync<Subscriber>(new BsonDocument());
+            var Subscribers = new List<Subscriber>();
+            while (await Collection.MoveNextAsync())
             {
-                var subs = await this._context.Subscribers.FindAsync<Subscriber>(new BsonDocument());
-                return subs.Current;
+                Subscribers.AddRange(Collection.Current);
+
             }
-            catch (Exception ex)
-            {
-                // log or manage the exception
-                throw ex;
-            }
+            return Subscribers;
         }
 
-        public Task<Subscriber> GetSubscriber(string id)
+        public async Task GetSubscriber(int id)
         {
-            throw new System.NotImplementedException();
+            var Filter = new BsonDocument("SubscriberId", id);
+            var Result = await this._context.Subscribers.FindAsync<Subscriber>(Filter);
+            while (await Result.MoveNextAsync())
+            {
+                foreach (var item in Result.Current)
+                {
+                    Console.WriteLine(item.FirstName);
+                }
+            }
+            // return 
+
+
         }
 
         public Task<bool> RemoveAllSubscribers()
