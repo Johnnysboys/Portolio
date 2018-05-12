@@ -4,6 +4,8 @@ using System;
 using MongoDB.Bson;
 using Microsoft.Extensions.Options;
 
+using Joller.Exceptions;
+
 namespace Joller.Models
 {
     public class SubscriberRepository : ISubscriberRepository
@@ -19,25 +21,14 @@ namespace Joller.Models
         {
             this._context = new SubscriberContext(ConnectionUrl);
         }
-
-        // public async Task<List<String>> FindAll()
-        // {
-        //     var subs = await this._context.Subscribers.FindAsync<Subscriber>(new BsonDocument());
-        //     var Cat = new List<String>();
-
-
-
-        //     while(await subs.MoveNextAsync()) {
-        //         Cat.Add(subs.Current);
-        //     }
-
-        //     System.Console.Write(subs.ToString());
-
-        // }
         public async Task AddSubscriber(Subscriber item)
         {
             try
             {
+                var Result = await _context.Subscribers.CountAsync(new BsonDocument("Email", item.Email));
+                Console.WriteLine(Result);
+                if (Result > 0)
+                    throw new EmailAlreadyExistException(item.Email);
                 await _context.Subscribers.InsertOneAsync(item);
             }
             catch (Exception ex)
@@ -58,21 +49,19 @@ namespace Joller.Models
             }
             return Subscribers;
         }
-
-        public async Task GetSubscriber(int id)
+        public async Task<Subscriber> GetSubscriber(string id)
         {
-            var Filter = new BsonDocument("SubscriberId", id);
+            var Filter = new BsonDocument("Email", id);
             var Result = await this._context.Subscribers.FindAsync<Subscriber>(Filter);
             while (await Result.MoveNextAsync())
             {
                 foreach (var item in Result.Current)
                 {
-                    Console.WriteLine(item.FirstName);
+                    return item;
                 }
+                return null;
             }
-            // return 
-
-
+            return null;
         }
 
         public Task<bool> RemoveAllSubscribers()
@@ -80,19 +69,39 @@ namespace Joller.Models
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> RemoveSubscriber(string id)
+        public async Task<bool> RemoveSubscriber(string email)
         {
-            throw new System.NotImplementedException();
+            var Filter = new BsonDocument("Email", email);
+            var Result = await this._context.Subscribers.DeleteOneAsync(Filter);
+
+            if (!Result.IsAcknowledged)
+                return Result.IsAcknowledged;
+
+            return Result.DeletedCount > 0;
         }
 
-        public Task<bool> UpdateSubscriber(string id, string body)
+        public async Task<bool> Unsubscribe(string id)
         {
-            throw new System.NotImplementedException();
+            Subscriber Subscriber = await this.GetSubscriber(id);
+            if (Subscriber == null)
+                return false;
+            Subscriber.Subscribed = false;
+
+            return await this.UpdateSubscriber(id, Subscriber);
         }
 
-        public Task<bool> UpdateSubscriberDocument(string id, string body)
+        public async Task<bool> UpdateSubscriber(string id, Subscriber Subscriber)
         {
-            throw new System.NotImplementedException();
+            var Filter = new BsonDocument("Email", id);
+            var Update = new BsonDocument("$set", Subscriber.ToBsonDocument());
+            var Result = await this._context.Subscribers.UpdateOneAsync(Filter, Update);
+
+
+            return Result.IsAcknowledged;
+        }
+        public Task<bool> UpdateSubscriberDocument(string id, Subscriber Subscriber)
+        {
+            throw new NotImplementedException();
         }
     }
 }
