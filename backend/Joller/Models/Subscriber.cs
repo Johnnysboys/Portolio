@@ -9,10 +9,11 @@ namespace Joller.Models
         public ObjectId InternalId { get; set; }
 
         public int SubscriberId { get; set; }
-
+        [BsonRequired]
         public string Email { get; set; }
-
+        [BsonRequired]
         public string FirstName { get; set; }
+        [BsonRequired]
         public string LastName { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime UnsubscribedOn { get; set; }
