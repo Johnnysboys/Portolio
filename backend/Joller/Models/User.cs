@@ -7,10 +7,14 @@ namespace Joller.Models
     {
         [BsonId]
         public ObjectId InternalId;
+        [BsonRequired]
         public string Email;
-        public string Name;
+
+        [BsonRequired]
         public string Password;
-        public string PhotoUrl;
+
+        public string Salt;
+        public bool Admin;
 
     }
 }
