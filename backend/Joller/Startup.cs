@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Joller.Models;
+using Joller.Repositories.Interfaces;
+using Joller.Repositories;
 namespace Joller
 {
     using Microsoft.AspNetCore.Builder;

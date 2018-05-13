@@ -3,6 +3,7 @@ using Nancy.Bootstrapper;
 using Nancy.TinyIoc;
 
 using Joller.Models;
+using Joller.Repositories.Interfaces;
 
 namespace Joller
 {

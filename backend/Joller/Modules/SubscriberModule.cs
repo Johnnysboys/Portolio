@@ -1,4 +1,5 @@
 using Joller.Models;
+using Joller.Repositories.Interfaces;
 using Nancy.ModelBinding;
 using System;
 namespace Joller.Modules

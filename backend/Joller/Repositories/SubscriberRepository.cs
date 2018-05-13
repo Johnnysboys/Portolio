@@ -3,10 +3,13 @@ using System.Threading.Tasks;
 using System;
 using MongoDB.Bson;
 using Microsoft.Extensions.Options;
+using Joller.Repositories.Interfaces;
+using Joller.Contexts;
+using Joller.Models;
 
 using Joller.Exceptions;
 
-namespace Joller.Models
+namespace Joller.Repositories
 {
     public class SubscriberRepository : ISubscriberRepository
     {

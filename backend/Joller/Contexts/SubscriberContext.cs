@@ -1,8 +1,9 @@
 using System;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using Joller.Models;
 
-namespace Joller.Models
+namespace Joller.Contexts
 {
     public class SubscriberContext
     {

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Joller.Models;
 
-namespace Joller.Models
+namespace Joller.Repositories.Interfaces
 {
     public interface ISubscriberRepository
     {
