@@ -1,6 +1,7 @@
 using Joller.Upload;
 using Nancy;
 using Nancy.ModelBinding;
+using Nancy.Security;
 
 namespace Joller.Modules
 {
@@ -11,6 +12,11 @@ namespace Joller.Modules
         public UploadFileModule(IFileUploadHandler fileUploadHandler)
             : base("/file")
         {
+
+            // It requires you to be an admin to upload
+            this.RequiresAuthentication();
+            this.RequiresClaims(c => c.Value.Equals("admin"));
+
             this.fileUploadHandler = fileUploadHandler;
 
             Post("/upload", async parameters =>
