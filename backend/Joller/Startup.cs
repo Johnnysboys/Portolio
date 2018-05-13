@@ -25,13 +25,15 @@ namespace Joller
             {
                 options.ConnectionString = Configuration.GetSection("MongoConnection:ConnectionString").Value;
                 options.Database = Configuration.GetSection("MongoConnection:Database").Value;
+                options.JwtSecret = Configuration.GetSection("Authentication:Secret").Value;
             });
 
             service.AddTransient<ISubscriberRepository, SubscriberRepository>();
+            service.AddTransient<IUserRepository, UserRepository>();
         }
         public void Configure(IApplicationBuilder app)
         {
-            app.UseOwin(x => x.UseNancy(opt => opt.Bootstrapper = new Bootstrapper(new SubscriberRepository("mongodb://localhost"))));
+            app.UseOwin(x => x.UseNancy(opt => opt.Bootstrapper = new Bootstrapper("mongodb://localhost")));
         }
     }
 }
