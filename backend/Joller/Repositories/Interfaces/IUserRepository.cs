@@ -10,7 +10,7 @@ namespace Joller.Repositories.Interfaces
         Task<User> GetUser(string id);
 
         // add new User document
-        Task AddUser(User item);
+        Task<bool> AddUser(User item);
 
         // remove a single document / User
         Task<bool> RemoveUser(string id);

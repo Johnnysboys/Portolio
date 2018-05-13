@@ -15,10 +15,19 @@ namespace Joller.Repositories
     {
 
         private readonly SubscriberContext _context = null;
+        private readonly Settings _settings;
 
         public SubscriberRepository(IOptions<Settings> Settings)
         {
+            Console.WriteLine("Here " + Settings.Value);
             this._context = new SubscriberContext(Settings);
+
+        }
+        public SubscriberRepository(Settings Settings)
+        {
+            this._settings = Settings;
+            this._context = new SubscriberContext(Settings.ConnectionString);
+
         }
         public SubscriberRepository(string ConnectionUrl)
         {
