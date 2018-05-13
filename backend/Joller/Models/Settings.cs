@@ -4,5 +4,7 @@ namespace Joller.Models
     {
         public string ConnectionString;
         public string Database;
+
+        public string JwtSecret;
     }
 }
