@@ -9,7 +9,7 @@ namespace Joller.Modules
     public class SubscriberModule : NancyModule
     {
         private readonly ISubscriberRepository _subscriberRepository;
-        public SubscriberModule(ISubscriberRepository subscriberRepository)
+        public SubscriberModule(ISubscriberRepository subscriberRepository) : base("/subscribers")
         {
             this._subscriberRepository = subscriberRepository;
 
@@ -20,7 +20,7 @@ namespace Joller.Modules
             });
 
             // Read A Specific
-            Get("/subscribers/{email}", async parameters =>
+            Get("/{email}", async parameters =>
             {
                 // Create subscriber from the recived data
                 Subscriber Subscriber = await this._subscriberRepository.GetSubscriber(parameters.email);
@@ -31,7 +31,7 @@ namespace Joller.Modules
             });
 
             // Create
-            Post("/subscribers", parameters =>
+            Post("/", parameters =>
             {
                 // Create subscriber from the recived data 
                 var Subscriber = this.Bind<Subscriber>();
@@ -41,7 +41,7 @@ namespace Joller.Modules
             });
 
             // Update
-            Patch("/subscribers/{email}/unsubscribe", async parameters =>
+            Patch("/{email}/unsubscribe", async parameters =>
             {
                 // Create subscriber from the recived data
                 bool Unsubscribed = await this._subscriberRepository.Unsubscribe(parameters.email);
@@ -52,7 +52,7 @@ namespace Joller.Modules
             });
 
             // Delete
-            Delete("/subscribers/{email}", async parameters =>
+            Delete("/{email}", async parameters =>
             {
                 // Create subscriber from the recived data
                 bool Deleted = await this._subscriberRepository.RemoveSubscriber(parameters.email);
