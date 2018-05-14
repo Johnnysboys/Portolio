@@ -45,5 +45,15 @@ namespace Joller
             container.Register(_userRepository);
             container.Register(_aboutMeRepository);
         }
+        protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)
+        {
+            pipelines.AfterRequest.AddItemToEndOfPipeline((ctx) =>
+            {
+                ctx.Response.WithHeader("Access-Control-Allow-Origin", "*")
+                                .WithHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+                                .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type, Authorization");
+
+            });
+        }
     }
 }
