@@ -17,6 +17,13 @@ namespace Joller.Authentication
                 { "sub", user.Email },
                 { "exp", exp }
             };
+            var jwtUser = new
+            {
+                Email = user.Email,
+                UserId = user.InternalId.ToString(),
+                Admin = user.Admin
+            };
+            payload.Add("user", jwtUser);
 
             if (user.Admin)
                 payload.Add("role", "admin");
