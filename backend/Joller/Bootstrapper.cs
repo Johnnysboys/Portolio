@@ -15,6 +15,7 @@ namespace Joller
 
         private readonly ISubscriberRepository _subscriberRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IAboutMeRepository _aboutMeRepository;
         public Bootstrapper()
         {
         }
@@ -23,6 +24,7 @@ namespace Joller
 
             this._subscriberRepository = new SubscriberRepository(mongodbUrl);
             this._userRepository = new UserRepository(mongodbUrl);
+            this._aboutMeRepository = new AboutMeRepository(mongodbUrl);
         }
 
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
@@ -41,6 +43,7 @@ namespace Joller
 
             container.Register(_subscriberRepository);
             container.Register(_userRepository);
+            container.Register(_aboutMeRepository);
         }
     }
 }
