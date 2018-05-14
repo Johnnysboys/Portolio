@@ -5,6 +5,7 @@ using Joller.Contexts;
 using Joller.Models;
 using Joller.Repositories.Interfaces;
 using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Joller.Repositories
 {
@@ -30,15 +31,35 @@ namespace Joller.Repositories
             }
         }
 
-        public Task<IEnumerable<AboutMe>> GetAllPosts()
+        public async Task<IEnumerable<AboutMe>> GetAllPosts()
         {
-            throw new System.NotImplementedException();
+            var sorting = Builders<AboutMe>.Sort.Descending("_id");
+            var options = new FindOptions<AboutMe, AboutMe> { Sort = sorting };
+
+            var Collection = await this._context.AboutMe.FindAsync<AboutMe>(new BsonDocument(), options);
+            var AboutMes = new List<AboutMe>();
+            while (await Collection.MoveNextAsync())
+            {
+                AboutMes.AddRange(Collection.Current);
+
+            }
+            return AboutMes;
         }
 
         public async Task<AboutMe> GetFirstPost()
         {
-            var items = await this._context.AboutMe.FindAsync<AboutMe>(new BsonDocument());
-            await items.MoveNextAsync();
+            var sorting = Builders<AboutMe>.Sort.Descending("_id");
+            var options = new FindOptions<AboutMe, AboutMe> { Sort = sorting };
+
+            var items = await this._context.AboutMe.FindAsync<AboutMe>(new BsonDocument(), options);
+
+            while (await items.MoveNextAsync())
+            {
+                foreach (var item in items.Current)
+                {
+                    return item;
+                }
+            }
 
             return null;
         }
