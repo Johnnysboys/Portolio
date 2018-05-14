@@ -13,7 +13,7 @@ namespace Joller.Upload
 
         public LocalStorageHandler(IRootPathProvider rootPathProvider)
         {
-            this.path = "uploads";
+            this.path = "Content/Images";
             this.rootPathProvider = rootPathProvider;
         }
 
@@ -22,7 +22,7 @@ namespace Joller.Upload
             string uuid = GetFileName();
             string targetFile = GetTargetFile(uuid);
 
-            using (FileStream destinationStream = File.Create(targetFile))
+            using (FileStream destinationStream = File.Create(targetFile + ".png"))
             {
                 await stream.CopyToAsync(destinationStream);
             }
