@@ -11,14 +11,24 @@ namespace Joller.Modules
     public class AboutMeModule : NancyModule
     {
         private readonly IAboutMeRepository _repo;
-        public AboutMeModule(IAboutMeRepository repo) : base("/aboutme")
+
+        // Misleading name, but dont wanna rename it at this point
+        // it's the posts endpoint now
+        public AboutMeModule(IAboutMeRepository repo) : base("/posts")
         {
             this._repo = repo;
-            Get("/", args =>
+            Get("/", async args =>
             {
-                return Response.AsJson(new { Ret = " Er Træt" });
+                var post = await this._repo.GetFirstPost();
+                return Response.AsJson(post);
             });
-            Post("/", args =>
+            Get("/all", async args =>
+            {
+                var posts = await this._repo.GetAllPosts();
+                return Response.AsJson(posts);
+            });
+
+            Post("/", async args =>
             {
                 this.RequiresAuthentication();
                 this.RequiresClaims(c => c.Value.Equals("admin"));
@@ -27,6 +37,8 @@ namespace Joller.Modules
 
                 if (String.IsNullOrWhiteSpace(post.Text))
                     return Response.AsJson(new { Status = "error", Message = "There has to be SOME text" });
+
+                await this._repo.AddPost(post);
                 return Response.AsJson(new { Status = "success", Message = "Done" });
             });
         }
