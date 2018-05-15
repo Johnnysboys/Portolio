@@ -9,6 +9,7 @@ export function login({ commit }, payload) {
   const axios = this._vm.$axios;
 
   return axios.post('/token/auth', payload).then(res => {
+    if (res.data.status === 'Error') return false;
     const token = res.data.token;
     LocalStorage.set('jwt', token);
 
