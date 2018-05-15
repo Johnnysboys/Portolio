@@ -7,6 +7,7 @@ namespace Joller.Repositories.Interfaces
     public interface IAboutMeRepository
     {
         Task<AboutMe> GetFirstPost();
+        Task<long> CountPosts();
         Task<IEnumerable<AboutMe>> GetAllPosts();
         Task<AboutMe> GetPost(string id);
 
