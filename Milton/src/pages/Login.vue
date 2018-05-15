@@ -24,7 +24,13 @@ export default {
     ...mapActions('auth', ['login']),
     loginHandler() {
       this.login({ email: this.email, password: this.password })
-        .then(_ => {
+        .then(success => {
+          if (!success) {
+            return this.$q.notify({
+              type: 'negative',
+              message: 'Something is wrong'
+            });
+          }
           this.$router.push('/');
         })
         .catch(err => {
