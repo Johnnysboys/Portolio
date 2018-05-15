@@ -16,11 +16,29 @@ namespace Joller
         private readonly IUserRepository _userRepository;
         private readonly PasswordHasher _passwordHasher;
 
+        private async void InitAdmin()
+        {
 
+            var adminUser = await this._userRepository.GetUser("admin@admin.com");
+            if (adminUser == null)
+            {
+                var encrypted = this._passwordHasher.Encrypt("admin");
+                User newAdmin = new User
+                {
+                    Email = "admin@admin.com",
+                    Password = encrypted[0],
+                    Salt = encrypted[1],
+                    Admin = true
+                };
+                await this._userRepository.AddUser(newAdmin);
+            }
+        }
         public UserModule(IUserRepository userRepository) : base("/users")
         {
             this._passwordHasher = new PasswordHasher();
             this._userRepository = userRepository;
+
+            this.InitAdmin();
 
             Post("/signup", async args =>
             {
