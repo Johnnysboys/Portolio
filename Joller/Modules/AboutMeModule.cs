@@ -14,9 +14,18 @@ namespace Joller.Modules
 
         // Misleading name, but dont wanna rename it at this point
         // it's the posts endpoint now
+        private async void InitPost()
+        {
+            var count = await this._repo.CountPosts();
+            if (count == 0)
+            {
+                await this._repo.AddPost(new AboutMe { Text = "<div align=\"center\">My name is Simon Sinding<br>Im 25, IT Engineering student, and <b>awesome</b>.<br></div><br>" });
+            }
+        }
         public AboutMeModule(IAboutMeRepository repo) : base("/posts")
         {
             this._repo = repo;
+            this.InitPost();
             Get("/", async args =>
             {
                 var post = await this._repo.GetFirstPost();
