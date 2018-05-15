@@ -2,8 +2,8 @@
 
 #### Developed by
 
-- Simon Sinding
-- Jonas Alslev Rasmussen
+- Simon Sinding - Sisin16@student.sdu.dk 
+- Jonas Alslev Rasmussen - Jora316@student.sdu.dk
 
 ## Description
 There are two project folders
