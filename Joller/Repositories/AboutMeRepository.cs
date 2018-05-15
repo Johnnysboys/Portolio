@@ -30,7 +30,10 @@ namespace Joller.Repositories
                 throw ex;
             }
         }
-
+        public async Task<long> CountPosts()
+        {
+            return await this._context.AboutMe.CountAsync(new BsonDocument());
+        }
         public async Task<IEnumerable<AboutMe>> GetAllPosts()
         {
             var sorting = Builders<AboutMe>.Sort.Descending("_id");
