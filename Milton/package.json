@@ -8,11 +8,14 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"No test specified\" && exit 0",
+    "serve": "node_modules/.bin/serve -p 5100 ./dist/spa-mat"
+    
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "jwt-decode": "^2.2.0"
+    "jwt-decode": "^2.2.0",
+    "serve": "^6.5.7"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
