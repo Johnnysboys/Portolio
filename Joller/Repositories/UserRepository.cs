@@ -16,6 +16,7 @@ namespace Joller.Repositories
         public UserRepository(string ConnectionUrl)
         {
             this._context = new UserContext(ConnectionUrl);
+
         }
         public async Task<bool> AddUser(User item)
         {
@@ -46,9 +47,9 @@ namespace Joller.Repositories
             return Users;
         }
 
-        public async Task<User> GetUser(string id)
+        public async Task<User> GetUser(string email)
         {
-            var Filter = new BsonDocument("Email", id);
+            var Filter = new BsonDocument("Email", email);
             var Result = await this._context.Users.FindAsync<User>(Filter);
             while (await Result.MoveNextAsync())
             {
